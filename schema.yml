@@ -1,0 +1,24 @@
+users:
+  documentID: auth.id
+  name: string
+  iconURL: string
+
+  joiningRooms:
+    documentID: roomsID
+    roomRef: documentReference
+    unreadCount: int
+    body: string # 最新のメッセージ
+    updatedAt: timestamp
+
+rooms:
+  documentID: auto
+  userIDs: [usersID]
+  updatedAt: timestamp
+
+  messages: # onCreate => joiningRooms更新(unreadCount, updateAt, body)
+    documentID: auto
+    formUserID: usersID
+    body: string
+    updatedAt: timestamp
+
+
