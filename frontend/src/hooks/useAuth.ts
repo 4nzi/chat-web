@@ -1,4 +1,5 @@
 import { useState, ChangeEvent, FormEvent } from 'react'
+import { useRouter } from 'next/router'
 import { auth, db } from '../../firebaseConfig'
 import { collection, setDoc, doc } from 'firebase/firestore'
 import {
@@ -7,6 +8,7 @@ import {
 } from 'firebase/auth'
 
 export const useAuth = () => {
+  const router = useRouter()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [userName, setUserName] = useState('')
@@ -34,6 +36,13 @@ export const useAuth = () => {
         }
         const usersRef = collection(db, 'users')
         await setDoc(doc(usersRef, result.user.uid), payload)
+
+        const id = await result.user.getIdToken()
+        await fetch('/api/session', {
+          method: 'POST',
+          body: JSON.stringify({ id }),
+        })
+        router.push('/')
       }
     } catch (e: any) {
       alert(e.message)
@@ -43,10 +52,21 @@ export const useAuth = () => {
   const login = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
-      await signInWithEmailAndPassword(auth, email, password)
+      const result = await signInWithEmailAndPassword(auth, email, password)
+
+      const id = await result.user.getIdToken()
+      await fetch('/api/session', {
+        method: 'POST',
+        body: JSON.stringify({ id }),
+      })
+      router.push('/')
     } catch (e: any) {
       alert(e.message)
     }
+  }
+
+  const logout = async () => {
+    await fetch('/api/sessionLogout', { method: 'POST' })
   }
 
   return {
@@ -58,5 +78,6 @@ export const useAuth = () => {
     userNameChange,
     createUser,
     login,
+    logout,
   }
 }
