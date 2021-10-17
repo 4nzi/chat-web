@@ -1,10 +1,14 @@
 import type { GetServerSideProps, NextPage } from 'next'
 import nookies from 'nookies'
 import { firebaseAdmin } from '../../firebaseAdminConfig'
+import { UserList, Chat } from '../templates'
 
 const Home: NextPage<{ myID: string }> = ({ myID }) => {
   return (
-    <div className="flex min-h-screen bg-gray-800 text-white">chat-web</div>
+    <div className="flex min-h-screen bg-gray-800 text-white ">
+      <UserList myID={myID} />
+      <Chat myID={myID} />
+    </div>
   )
 }
 
