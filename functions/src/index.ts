@@ -4,7 +4,7 @@ import * as admin from 'firebase-admin'
 admin.initializeApp()
 const db = admin.firestore()
 
-export const createRooms = functions.firestore
+export const createJoiningRooms = functions.firestore
   .document('rooms/{roomID}')
   .onCreate(async (snap, context) => {
     const value = snap.data()
