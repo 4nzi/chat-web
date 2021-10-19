@@ -5,7 +5,7 @@ users:
 
   joiningRooms:
     documentID: roomsID
-    roomRef: documentReference
+    personID: usersID
     unreadCount: int
     body: string # 最新のメッセージ
     updatedAt: timestamp
