@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { db } from '../../firebaseConfig'
 import { collection, onSnapshot, query, orderBy } from 'firebase/firestore'
-import { Message, NoResults } from '../components/index'
+import { Message, NoResults, AddMessage } from '../components/index'
 
 interface MESSAGE {
   formUserID: string
@@ -31,10 +31,10 @@ const Chat: React.VFC<{ myID: string }> = ({ myID }) => {
 
   if (!room) return <NoResults />
   return (
-    <main className=" w-full">
-      <ul className="flex flex-col gap-2 p-3 ">
+    <main className="w-full p-3">
+      <ul className="flex flex-col gap-2 p-3">
         {messages?.map((message: MESSAGE, i: number) => (
-          <li key={i} className="cursor-pointer  ">
+          <li key={i} className="cursor-pointer">
             <Message
               body={message.body}
               formUserID={message.formUserID}
@@ -43,6 +43,7 @@ const Chat: React.VFC<{ myID: string }> = ({ myID }) => {
           </li>
         ))}
       </ul>
+      <AddMessage myID={myID} roomID={room} />
     </main>
   )
 }
