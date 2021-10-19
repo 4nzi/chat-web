@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { collection, onSnapshot, query, orderBy } from 'firebase/firestore'
 import { db } from '../../firebaseConfig'
-import { User } from '../components/index'
+import { User, AddUser } from '../components/index'
 
 interface USER {
   roomID: string
@@ -31,8 +31,9 @@ const UserList: React.VFC<{ myID: string }> = ({ myID }) => {
   }, [])
 
   return (
-    <aside className="bg-gray-900 w-80 ">
-      <ul className="flex flex-col gap-2 p-3">
+    <aside className="bg-gray-900 w-96 p-3 ">
+      <AddUser myID={myID} />
+      <ul className="flex flex-col gap-2">
         {users?.map((user: USER, i: number) => (
           <li key={i} className="cursor-pointer ">
             <User
