@@ -2,8 +2,10 @@ import type { GetServerSideProps, NextPage } from 'next'
 import nookies from 'nookies'
 import { firebaseAdmin } from '../../firebaseAdminConfig'
 import { UserList, Chat } from '../templates'
+import { useGetUsers } from '../hooks/useGetUsers'
 
 const Home: NextPage<{ myID: string }> = ({ myID }) => {
+  const {} = useGetUsers(myID)
   return (
     <div className="flex min-h-screen bg-gray-800 text-white">
       <UserList myID={myID} />
