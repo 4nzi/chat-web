@@ -26,3 +26,26 @@ export const createJoiningRooms = functions.firestore
         .set(payload)
     }
   })
+
+export const updateJoiningRooms = functions.firestore
+  .document('rooms/{roomID}/messages/{messageID}')
+  .onCreate(async (snap, context) => {
+    const roomID = context.params.roomID
+    const roomDoc = await db.collection('rooms').doc(roomID).get()
+    const users: string[] = await roomDoc.data()!.userIDs
+    const body: string = await snap.data()!.body
+
+    for (const i of users) {
+      const payload = {
+        unreadCount: admin.firestore.FieldValue.increment(1.0),
+        body: body,
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      }
+      await db
+        .collection('users')
+        .doc(i)
+        .collection('joiningRooms')
+        .doc(roomID)
+        .update(payload)
+    }
+  })
