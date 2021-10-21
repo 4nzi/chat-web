@@ -31,11 +31,11 @@ const UserList: React.VFC<{ myID: string }> = ({ myID }) => {
   }, [])
 
   return (
-    <aside className="bg-gray-900 w-96 p-3 ">
+    <aside className="bg-gray-900 w-96 p-3 flex flex-col gap-2">
       <AddUser myID={myID} />
       <ul className="flex flex-col gap-2">
         {users?.map((user: USER, i: number) => (
-          <li key={i} className="cursor-pointer ">
+          <li key={i} className="cursor-pointer">
             <User
               roomID={user.roomID}
               personID={user.personID}
