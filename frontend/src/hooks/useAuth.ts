@@ -67,6 +67,7 @@ export const useAuth = () => {
 
   const logout = async () => {
     await fetch('/api/sessionLogout', { method: 'POST' })
+    router.push('/login')
   }
 
   return {

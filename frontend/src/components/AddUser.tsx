@@ -1,6 +1,8 @@
 import { useState, ChangeEvent, FormEvent } from 'react'
 import { db } from '../../firebaseConfig'
 import { collection, doc, getDoc, addDoc, Timestamp } from 'firebase/firestore'
+import { useAtom } from 'jotai'
+import { usersAtom } from '../store/usersAtom'
 
 interface PROPS {
   myID: string
@@ -8,6 +10,7 @@ interface PROPS {
 
 const AddUser: React.VFC<PROPS> = ({ myID }) => {
   const [userID, setUserID] = useState('')
+  const [, setUsers] = useAtom(usersAtom)
 
   const addUser = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -21,9 +24,20 @@ const AddUser: React.VFC<PROPS> = ({ myID }) => {
       }
 
       await addDoc(collection(db, 'rooms'), payload)
+
+      setUsers((prev) => [
+        ...prev,
+        {
+          id: userDoc.id,
+          name: userDoc.data().name,
+          iconURL: userDoc.data().iconURL,
+        },
+      ])
+
       setUserID('')
     } else {
       alert('ユーザーが見つかりませんでした。')
+      setUserID('')
     }
   }
 
@@ -34,7 +48,7 @@ const AddUser: React.VFC<PROPS> = ({ myID }) => {
           setUserID(e.target.value)
         }}
         value={userID}
-        placeholder="ユーザーID"
+        placeholder="ユーザーIDを入力"
         className="ipt"
         required
       />
