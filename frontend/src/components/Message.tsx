@@ -26,24 +26,27 @@ const Message: React.VFC<PROPS> = ({ formUserID, body, myID }) => {
 
   if (formUserID === myID)
     return (
-      <div className="flex gap-2 items-center justify-end">
+      <div className="flex items-center justify-end cursor-text">
         <div className="h-12">
-          <p className="text-gray-400">{body}</p>
+          <p className="p-2 bg-indigo-400 rounded-xl rounded-tr-none text-black">
+            {body}
+          </p>
         </div>
       </div>
     )
 
   return (
-    <div className="flex gap-2 items-center">
+    <div className="flex gap-2 items-center cursor-text">
       <Image
         src={iconURL || '/default_avatar.jpg'}
         alt="Avatar"
-        width={50}
-        height={50}
+        width={40}
+        height={40}
+        className="rounded-full"
       />
       <div>
-        <h4 className="font-bold">{userName}</h4>
-        <p className="text-gray-400">{body}</p>
+        <h4 className="font-bold text-sm text-gray-400">{userName}</h4>
+        <p className="p-2 bg-gray-600 rounded-xl rounded-tl-none">{body}</p>
       </div>
     </div>
   )

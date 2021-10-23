@@ -23,7 +23,10 @@ const AddUser: React.VFC<PROPS> = ({ myID, roomID }) => {
   }
 
   return (
-    <form onSubmit={addMessage} className="flex gap-1 fixed bottom-4 z-10">
+    <form
+      onSubmit={addMessage}
+      className="flex gap-1 fixed bottom-4 left-1/2 z-10 w-96"
+    >
       <input
         onChange={(e: ChangeEvent<HTMLInputElement>) => {
           setMassage(e.target.value)

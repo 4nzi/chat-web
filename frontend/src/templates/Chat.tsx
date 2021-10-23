@@ -31,8 +31,8 @@ const Chat: React.VFC<{ myID: string }> = ({ myID }) => {
 
   if (!room) return <NoResults />
   return (
-    <main className="w-full p-3">
-      <ul className="flex flex-col gap-2 p-3">
+    <main className="w-full p-3 bg-gray-900">
+      <ul className="flex flex-col gap-2 mb-20">
         {messages?.map((message: MESSAGE, i: number) => (
           <li key={i} className="cursor-pointer">
             <Message
