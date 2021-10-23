@@ -25,7 +25,20 @@ export const useGetUsers = async (myID: string) => {
           },
         ])
       })
+
+      const myRef = doc(db, 'users', myID)
+      const myDoc = await getDoc(myRef)
+      const myProf = myDoc.data()
+      setUsers((prev) => [
+        ...prev,
+        {
+          id: myDoc.id,
+          name: myProf!.name,
+          iconURL: myProf!.iconURL,
+        },
+      ])
     }
+
     getUsers(myID)
     console.log('mounted useGetUsers')
   }, [])
