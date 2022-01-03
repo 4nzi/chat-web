@@ -20,6 +20,17 @@ const MyProf: React.VFC<{ myID: string }> = ({ myID }) => {
     console.log('mounted MyProf')
   }, [users])
 
+  function copyMyID() {
+    navigator.clipboard.writeText(myID).then(
+      function () {
+        console.log('Copying to clipboard was successful!')
+      },
+      function (err) {
+        console.error(err)
+      }
+    )
+  }
+
   return (
     <div className="flex gap-2 items-center" id="wapper">
       <Image
@@ -30,12 +41,23 @@ const MyProf: React.VFC<{ myID: string }> = ({ myID }) => {
         className="rounded-full"
       />
       <h4 className="font-bold">{userName}</h4>
-      <span
-        onClick={logout}
-        className="ml-auto cursor-pointer hover:opacity-50"
-      >
-        ・・・
-      </span>
+      <div className="pt-2 opacity-50">
+        <span
+          onClick={copyMyID}
+          className="ml-auto cursor-pointer hover:opacity-50 "
+        >
+          <Image src="/copy.png" alt="copy my id" width={19} height={20} />
+        </span>
+      </div>
+
+      <div className="ml-auto ">
+        <span
+          onClick={logout}
+          className="ml-auto cursor-pointer hover:opacity-50 text-gray-400"
+        >
+          ログアウト
+        </span>
+      </div>
     </div>
   )
 }
