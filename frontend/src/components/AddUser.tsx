@@ -10,14 +10,19 @@ interface PROPS {
 
 const AddUser: React.VFC<PROPS> = ({ myID }) => {
   const [userID, setUserID] = useState('')
-  const [, setUsers] = useAtom(usersAtom)
+  const [users, setUsers] = useAtom(usersAtom)
+
+  const isAlreadyFriend = () => {
+    const ids = users.map((el) => el.id)
+    return ids.includes(userID)
+  }
 
   const addUser = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const userRef = doc(db, 'users', userID)
     const userDoc = await getDoc(userRef)
 
-    if (userDoc.exists()) {
+    if (userDoc.exists() && myID !== userID && !isAlreadyFriend()) {
       const payload = {
         userIDs: [myID, userID],
         updatedAt: Timestamp.now(),
@@ -34,6 +39,12 @@ const AddUser: React.VFC<PROPS> = ({ myID }) => {
         },
       ])
 
+      setUserID('')
+    } else if (myID == userID) {
+      alert('追加したいユーザーのIDを入力してください。')
+      setUserID('')
+    } else if (isAlreadyFriend()) {
+      alert('すでに友達です。')
       setUserID('')
     } else {
       alert('ユーザーが見つかりませんでした。')
