@@ -1,8 +1,41 @@
 rules_version = '2';
 service cloud.firestore {
-  match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write: if false;
+    match /databases/{database}/documents {
+
+        function isAuthenticated() {
+            return request.auth != null;
+        }
+
+        function isUserAuthenticated(user) {
+            return isAuthenticated() && user == request.auth.uid;
+        }
+
+        function isJoiningRooms(room) {
+          return exists(/databases/$(database)/documents/users/$(request.auth.uid)/joiningRooms/$(room));
+        }
+
+        match /users/{userID} {
+            allow get: if isAuthenticated();
+						allow create: if isUserAuthenticated(userID)
+              && ('name' in request.resource.data) && request.resource.data.name is string && request.resource.data.name.size() <= 20;
+            allow update: if isUserAuthenticated(userID);
+
+            match /joiningRooms/{document=**} {
+              allow read: if isUserAuthenticated(userID);
+            }
+        }
+
+        match /rooms/{roomsID} {
+          allow read: if isJoiningRooms(roomsID);
+          allow create: if isAuthenticated()
+            && ('userIDs' in request.resource.data) && request.resource.data.userIDs.hasAll([request.auth.uid]);
+
+          match /messages/{document=**} {
+            allow read: if isJoiningRooms(roomsID);
+            allow create: if isJoiningRooms(roomsID)
+              && ('formUserID' in request.resource.data) && request.resource.data.formUserID == request.auth.uid
+              && ('body' in request.resource.data) && request.resource.data.body is string && request.resource.data.body.size() <= 100;
+          }
+        }
     }
-  }
 }
