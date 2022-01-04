@@ -41,6 +41,11 @@ export const useGetUsers = async (myID: string) => {
 
     getUsers(myID)
     console.log('mounted useGetUsers')
+
+    return () => {
+      setUsers([])
+      console.log('unmounted useGetUsers')
+    }
   }, [])
 
   return { users }
