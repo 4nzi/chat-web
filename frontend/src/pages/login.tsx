@@ -50,6 +50,13 @@ const Login: NextPage = () => {
             登録はこちら
           </a>
         </Link>
+        <br />
+        <br />
+        <div>
+          <p>＜テストユーザー＞</p>
+          <p>メール: test@example.com</p>
+          <p>パスワード: testpass</p>
+        </div>
       </form>
     </main>
   )
